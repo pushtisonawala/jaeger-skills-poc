@@ -120,8 +120,3 @@ This is more than a YAML loader:
 - Dry-run mode for CI workflows
 - Example skills that show how the mechanism plugs into the broader BYOA architecture
 
-## Built by
-
-Pushti Sonawala  
-LFX Term 2 2026 applicant  
-Jaeger AI-Powered Trace Analysis Phase 2 - Skills Framework
