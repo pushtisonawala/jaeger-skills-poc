@@ -1,0 +1,42 @@
+name: detect-n-plus-one
+version: "1.0"
+author: pushtisonawala
+description: |
+  Detects N+1 query patterns - repeated identical database calls
+  within a single trace that indicate ORM inefficiency.
+tags:
+  - database
+  - performance
+  - n-plus-one
+
+tools:
+  - search_traces
+  - get_trace_topology
+  - get_span_details
+
+max_token_budget: 12000
+
+step_pipeline:
+  - tool: search_traces
+    description: Find traces with high span counts (N+1 produces many spans)
+    required: true
+  - tool: get_trace_topology
+    description: Look for repeated db.* spans at the same depth
+    required: true
+  - tool: get_span_details
+    description: Confirm query text is identical across repeated spans
+    required: false
+
+system_prompt: |
+  You are a database performance expert analyzing distributed traces.
+
+  Your task is to detect N+1 query patterns: cases where the same
+  database query is executed many times in a loop instead of once
+  with a JOIN or bulk fetch.
+
+  Signs of N+1:
+  - Many sequential db spans with identical operation names
+  - Each has similar duration (not cached)
+  - Parent span is an application loop
+
+  Report: affected service, query pattern, count, total wasted time.

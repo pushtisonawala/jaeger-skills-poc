@@ -1,0 +1,9 @@
+name: ""
+version: "1.0"
+author: test
+description: An invalid test fixture skill.
+tags:
+  - test
+tools:
+  - fake_tool_that_doesnt_exist
+system_prompt: ""

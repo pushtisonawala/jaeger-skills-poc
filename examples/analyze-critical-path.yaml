@@ -1,0 +1,40 @@
+name: analyze-critical-path
+version: "1.0"
+author: pushtisonawala
+description: |
+  Identifies the critical path through a trace - the chain of
+  spans that determines total end-to-end latency.
+tags:
+  - latency
+  - performance
+  - critical-path
+
+tools:
+  - search_traces
+  - get_trace_topology
+  - get_span_details
+
+max_token_budget: 8000
+
+step_pipeline:
+  - tool: search_traces
+    description: Find traces matching the user's service/time criteria
+    required: true
+  - tool: get_trace_topology
+    description: Get structural overview without loading all span attributes
+    required: true
+  - tool: get_span_details
+    description: Drill into specific high-latency spans only
+    required: false
+
+system_prompt: |
+  You are a distributed systems expert analyzing trace data in Jaeger.
+
+  Your task is to identify the critical path - the sequence of spans
+  with the highest cumulative latency that determines total request time.
+
+  Rules:
+  1. Always call get_trace_topology BEFORE get_span_details
+  2. Only fetch details for spans on the suspected critical path
+  3. Report: critical path services, total latency, bottleneck span
+  4. Do not speculate beyond the trace data provided

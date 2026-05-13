@@ -1,0 +1,12 @@
+name: valid-test-skill
+version: "1.0"
+author: test
+description: A valid test fixture skill.
+tags:
+  - test
+tools:
+  - search_traces
+  - get_trace
+system_prompt: |
+  You are a test fixture.
+max_token_budget: 5000

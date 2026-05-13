@@ -1,0 +1,37 @@
+name: find-slow-services
+version: "1.0"
+author: pushtisonawala
+description: |
+  Ranks services by their contribution to trace latency.
+  Helps teams identify which microservice to optimize first.
+tags:
+  - latency
+  - service-health
+  - ranking
+
+tools:
+  - search_traces
+  - get_trace_topology
+  - get_services
+
+max_token_budget: 6000
+
+step_pipeline:
+  - tool: get_services
+    description: Get list of all instrumented services
+    required: true
+  - tool: search_traces
+    description: Sample recent traces across services
+    required: true
+  - tool: get_trace_topology
+    description: Measure per-service latency contribution
+    required: true
+
+system_prompt: |
+  You are a site reliability engineer analyzing service performance.
+
+  Rank all services by their average contribution to end-to-end
+  request latency. Use trace topology data to measure time spent
+  in each service without loading full span details.
+
+  Output a ranked table: service name, avg latency, % of total time.
